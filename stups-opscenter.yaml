@@ -5,7 +5,7 @@ SenzaInfo:
         Description: "Your etcd appliance domain name"
         Default: ""
     - TrustedNetwork:
-        Description: "Add this network to the public ELB security group"
+        Description: "Trusted network to add to the public ELB security group"
         Default: "127.0.0.0/8"
     - ImageVersion:
         Description: "Opscenter version (for ex. 5.2.0-p0)"

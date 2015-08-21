@@ -47,10 +47,16 @@ parameter specifying your own application id.
 ## Howto
 
 Creating an instance of this appliance is very easy. You just need to provide 1
-parameter which is your etcd domain. Assuming your etc domain is
-``etcd.god.example.com`` you would run senza like:
+parameter which is your etcd domain. Assuming your team's Hosted Zone is
+``cassandra.rocks.org`` and your etcd domain is ``etcd.cassandra.rocks.org``
+you would run senza like:
 
-    senza create stups-opscenter.yaml etcd.god.example.com
+    senza create stups-opscenter.yaml app etcd.cassandra.rocks.org
+    
+Where ``app`` is the Stack version (You can use anything else that is valid)
+
+After CloudFormation does its job you can try to access Opscenter using the URL
+http://opscenter.cassandra.rocks.org.
     
 ## Known limitations
 
