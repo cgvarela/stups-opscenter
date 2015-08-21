@@ -18,14 +18,6 @@ then
     fi
 fi
 
-ENABLED_AUTH=${ENABLED_AUTH:-"False"}
-
-if [ "$ENABLED_AUTH" = "True" ] ;
-then
-    echo "Enabling Opscenter authentication ... "
-    sed -i 's:enabled = False:enabled = True:g' /etc/opscenter/opscenterd.conf
-fi
-
 echo "Starting Opscenter ..."
 /usr/share/opscenter/bin/opscenter -f
 

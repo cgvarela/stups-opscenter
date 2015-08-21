@@ -1,66 +1,50 @@
-# basic information for generating and executing this definition
 SenzaInfo:
-  StackName: stups-opscenter
+  StackName: opscenter
   Parameters:
-    - MintBucket:
-        Description: "Your S3 bucket where mint will drop OAuth credentials"
-    - ScalyrKey:
-        Description: "The API key of Scalyr logging service"
     - EtcdDomain:
         Description: "Your etcd appliance domain name"
         Default: ""
-    - Authentication:
-        Description: "If you want to enable authentication"
-        Default: "False"
+    - TrustedNetwork:
+        Description: "Add this network to the public ELB security group"
+        Default: "127.0.0.0/8"
     - ImageVersion:
         Description: "Opscenter version (for ex. 5.2.0-p0)"
         Default: "5.2.0-p0-SNAPSHOT"
+    - ApplicationId:
+        Description: "The application id according to yourturn"
+        Default: "stups-cassandra-opscenter"
       
-# a list of senza components to apply to the definition
 SenzaComponents:
 
-  # this basic configuration is required for the other components
   - Configuration:
-      Type: Senza::StupsAutoConfiguration # auto-detect network setup
+      Type: Senza::StupsAutoConfiguration
 
-  # will create a launch configuration and auto scaling group with scaling triggers
   - OpsCenter:
       Type: Senza::TaupageAutoScalingGroup
-      InstanceType: "t2.medium"
+      InstanceType: "t2.micro"
       SecurityGroups:
         - Fn::GetAtt:
           - StupsCassandraOpsCenterSg
           - GroupId
-      IamRoles:
-        - Ref: StupsCassandraOpsCenterRole
       ElasticLoadBalancer: OpsCenterLoadBalancer
-      AssociatePublicIpAddress: false # change for standalone deployment in default VPC
       TaupageConfig:
         root: true
         runtime: Docker
-        application_id: "stups-cassandra-opscenter"
-        source: "pierone.stups.zalan.do/mop/stups-opscenter:{{Arguments.ImageVersion}}"
+        application_id: "{{Arguments.ApplicationId}}"
+        source: "os-registry.stups.zalan.do/mop/stups-opscenter:{{Arguments.ImageVersion}}"
         etcd_discovery_domain: "{{Arguments.EtcdDomain}}"
-        mint_bucket: "{{Arguments.MintBucket}}"
         health_check_path: /opscenter/index.html
-        scalyr_account_key: "{{Arguments.ScalyrKey}}"
         # http://docs.datastax.com/en/opscenter/5.0/opsc/reference/opscPorts_r.html
         ports:
           8888: 8888
           61620: 61620
-        environment:
-          ENABLED_AUTH: "{{Arguments.Authentication}}"
-          
 
-
-  # creates an ELB entry and Route53 domains to this ELB
   - OpsCenterLoadBalancer:
       Type: Senza::WeightedDnsElasticLoadBalancer
       HTTPPort: 8888
       HealthCheckPath: /opscenter/index.html
-      IdleTimeout: 3600
       SecurityGroups:
-        - Fn::GetAtt: # ELB SG referencing requires using GetAtt
+        - Fn::GetAtt:
           - StupsCassandraOpsCenterLbSg
           - GroupId
 
@@ -90,25 +74,9 @@ Resources:
       - IpProtocol: tcp
         FromPort: 443
         ToPort: 443
-        CidrIp: 0.0.0.0/0
-
-  StupsCassandraOpsCenterRole:
-    Type: AWS::IAM::Role
-    Properties:
-      Policies:
-        - PolicyName: CassandraOpsCenterMintRead
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-            - Effect: Allow
-              Action: "s3:GetObject"
-              Resource: ["arn:aws:s3:::{{Arguments.MintBucket}}/*"]
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-        - Effect: Allow
-          Principal:
-            Service: ec2.amazonaws.com
-          Action: sts:AssumeRole
-      Path: /
+        CidrIp: 172.16.0.0/12
+      - IpProtocol: tcp
+        FromPort: 443
+        ToPort: 443
+        CidrIp: "{{Arguments.TrustedNetwork}}"
 
