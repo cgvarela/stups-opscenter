@@ -68,7 +68,7 @@ you would run Senza like:
 Where ``app`` is the Stack version (You can use any other valid argument)
 
 After CloudFormation does its job you can try to access OpsCenter using the URL
-https://opscenter.fsociety.example.com.
+https://opscenter.fsociety.example.com/opscenter/index.html.
     
 ## Known limitations
 
