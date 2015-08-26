@@ -1,4 +1,5 @@
 # Opscenter appliance for STUPS
+----
 
 This is an appliance that you can use to deploy 
 [OpsCenter](http://www.datastax.com/products/datastax-enterprise-visual-admin) 
@@ -70,7 +71,7 @@ Where ``app`` is the Stack version (You can use any other valid argument)
 After CloudFormation does its job you can try to access OpsCenter using the URL
 https://opscenter.fsociety.example.com/opscenter/index.html.
     
-## Known limitations
+## Known issues
 
 - There is no authentication. You should secure the appliance using security groups.
 
