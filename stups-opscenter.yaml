@@ -9,7 +9,7 @@ SenzaInfo:
         Default: "127.0.0.0/8"
     - ImageVersion:
         Description: "Opscenter version (for ex. 5.2.0-p0)"
-        Default: "5.2.0-p0-SNAPSHOT"
+        Default: "5.2.0-p0"
     - ApplicationId:
         Description: "The application id according to yourturn"
         Default: "stups-cassandra-opscenter"

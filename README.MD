@@ -23,7 +23,7 @@ defaults with values that better match your own requirements.
     +----------------+---------------------------------------------------------+---------------------------+
     | EtcdDomain     | Your etcd appliance domain name                         | NONE                      |
     | TrustedNetwork | Trusted network to add to the public ELB security group | 127.0.0.0/8               |
-    | ImageVersion   | Opscenter docker image version (for ex. 5.2.0-p0)       | 5.2.0-p0-SNAPSHOT         |
+    | ImageVersion   | Opscenter docker image version (for ex. 5.2.0-p0)       | 5.2.0-p0                  |
     | ApplicationId  | The application id according to yourturn                | stups-cassandra-opscenter |
     +----------------+---------------------------------------------------------+---------------------------+
 
