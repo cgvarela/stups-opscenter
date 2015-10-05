@@ -31,7 +31,7 @@ SenzaComponents:
         root: true
         runtime: Docker
         application_id: "{{Arguments.ApplicationId}}"
-        source: "os-registry.stups.zalan.do/mop/stups-opscenter:{{Arguments.ImageVersion}}"
+        source: "registry.opensource.zalan.do/mop/stups-opscenter:{{Arguments.ImageVersion}}"
         etcd_discovery_domain: "{{Arguments.EtcdDomain}}"
         health_check_path: /opscenter/index.html
         # http://docs.datastax.com/en/opscenter/5.0/opsc/reference/opscPorts_r.html
